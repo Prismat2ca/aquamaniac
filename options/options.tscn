@@ -20,6 +20,11 @@ func _on_pressed() -> void:
 	get_tree().change_scene_to_file(\"res://settings/settings.tscn\")
 "
 
+[sub_resource type="GDScript" id="GDScript_c0xh2"]
+resource_name = "difficultySlider"
+script/source = "extends HSlider
+"
+
 [node name="Options" type="Control" unique_id=1101607369]
 layout_mode = 3
 anchors_preset = 15
@@ -49,6 +54,14 @@ offset_top = 51.0
 offset_right = 124.0
 offset_bottom = 91.0
 script = SubResource("GDScript_0o51j")
+
+[node name="difficultySlider" type="HSlider" parent="." unique_id=1927997549]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 115.0
+offset_right = 231.0
+offset_bottom = 131.0
+script = SubResource("GDScript_c0xh2")
 
 [connection signal="pressed" from="backButton" to="backButton" method="_on_pressed"]
 [connection signal="pressed" from="settingsButton" to="backButton" method="_on_settings_button_pressed"]

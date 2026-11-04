@@ -13,7 +13,8 @@ script/source = "extends TextureButton
 
 
 func _on_pressed() -> void:
-	get_tree().change_scene_to_file(\"res://options/options.tscn\")
+	pass
+	#get_tree().change_scene_to_file(\"res://options/options.tscn\")
 "
 
 [node name="Menu" type="Control" unique_id=1247449238]
