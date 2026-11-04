@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bi12bj3jgqk8h"]
+
+[sub_resource type="GDScript" id="GDScript_1r8lk"]
+resource_name = "timerLabel"
+script/source = "extends RichTextLabel
+
+func _physics_process(delta):
+	$\".\".text = str(int(round($\"../Timer\".time_left)))
+"
+
+[node name="roundTimer" type="Node2D" unique_id=30991989]
+
+[node name="Timer" type="Timer" parent="." unique_id=1126313950]
+wait_time = 30.0
+one_shot = true
+autostart = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=232337206]
+offset_right = 280.0
+offset_bottom = 40.0
+script = SubResource("GDScript_1r8lk")

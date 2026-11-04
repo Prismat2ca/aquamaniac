@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://bww27pw2y2wsx"]
+
+[ext_resource type="Texture2D" uid="uid://bi566djv85dbf" path="res://round/round_screen.png" id="1_rf44n"]
+[ext_resource type="Script" uid="uid://62eq2snxuaty" path="res://round/character_body_2d.gd" id="2_wl5wo"]
+[ext_resource type="Texture2D" uid="uid://c538rh8s0wdq3" path="res://round/ship.png" id="3_qpjc3"]
+[ext_resource type="Texture2D" uid="uid://c60llxfr81wpw" path="res://round/spawn.png" id="4_qpjc3"]
+[ext_resource type="PackedScene" uid="uid://4k8ofuollgjb" path="res://round/money.tscn" id="5_1l7ea"]
+[ext_resource type="PackedScene" uid="uid://bi12bj3jgqk8h" path="res://round/round_timer.tscn" id="6_x00y4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qpjc3"]
+size = Vector2(73, 29)
+
+[sub_resource type="GDScript" id="GDScript_qpjc3"]
+script/source = "extends CharacterBody2D
+
+@export var speed = 10
+var angle = 0
+var acc = Vector2(0,0)
+var vel = Vector2(0,0)
+
+#takes in user movement and calculates acceleration and velocity.
+
+func getInput():
+	var inputDirection = Input.get_vector(\"left\", \"right\", \"up\", \"down\")
+	#changes the angle based on left and right input
+	angle +=inputDirection[0]*PI/150
+	
+	#makes acceleration a vector based on the angle
+	#then multiplied by the vertical user input
+	acc= Vector2.from_angle(angle)*speed*-inputDirection[1]
+	vel+=acc
+	vel*=0.9
+	velocity = -vel
+
+#built in function that runs repeatedly
+func _physics_process(delta):
+
+	getInput()
+	move_and_slide()
+
+
+func _on_area_2d_area_entered(area: Area2D) -> void:
+	get_tree().change_scene_to_file(\"res://minigame/minigame.tscn\")
+	
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1l7ea"]
+radius = 21.377558
+
+[node name="Node2D" type="Node2D" unique_id=858340303]
+
+[node name="RoundScreen" type="Sprite2D" parent="." unique_id=328830945]
+position = Vector2(160, 90)
+texture = ExtResource("1_rf44n")
+
+[node name="ship" type="CharacterBody2D" parent="." unique_id=1465159626]
+position = Vector2(159, 87)
+script = ExtResource("2_wl5wo")
+
+[node name="Ship" type="Sprite2D" parent="ship" unique_id=1197407335]
+texture = ExtResource("3_qpjc3")
+
+[node name="Area2D" type="Area2D" parent="ship" unique_id=541752461]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/Area2D" unique_id=1260905619]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_qpjc3")
+
+[node name="spawn" type="CharacterBody2D" parent="." unique_id=863671120]
+position = Vector2(261, 105)
+script = SubResource("GDScript_qpjc3")
+
+[node name="Spawn" type="Sprite2D" parent="spawn" unique_id=2085829000]
+texture = ExtResource("4_qpjc3")
+
+[node name="Area2D" type="Area2D" parent="spawn" unique_id=1823009190]
+position = Vector2(-261, -105)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="spawn/Area2D" unique_id=244220841]
+position = Vector2(261, 106)
+shape = SubResource("CircleShape2D_1l7ea")
+
+[node name="Node2D" parent="." unique_id=350536444 instance=ExtResource("5_1l7ea")]
+position = Vector2(7, 5)
+
+[node name="roundTimer" parent="." unique_id=30991989 instance=ExtResource("6_x00y4")]
+position = Vector2(126, 18)
+
+[connection signal="area_entered" from="spawn/Area2D" to="spawn" method="_on_area_2d_area_entered"]

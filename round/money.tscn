@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://4k8ofuollgjb"]
+
+[node name="Node2D" type="Node2D" unique_id=350536444]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=990875131]
+offset_right = 158.0
+offset_bottom = 40.0
+text = "Money: 100"

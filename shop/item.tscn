@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://d2hsdvmk4k7n3"]
+
+[ext_resource type="Texture2D" uid="uid://duvssljc1fdgw" path="res://shop/item.png" id="1_1yahu"]
+
+[node name="Node2D" type="Node2D" unique_id=1899565630]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2050493109]
+texture = ExtResource("1_1yahu")
+
+[node name="Label" type="Label" parent="." unique_id=1544798877]
+offset_left = -33.0
+offset_top = 16.0
+offset_right = 48.0
+offset_bottom = 39.0
+scale = Vector2(0.8, 0.8)
+text = "PRICE: 100"

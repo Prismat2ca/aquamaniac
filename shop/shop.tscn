@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://hyiop6xn4d3b"]
+
+[ext_resource type="Texture2D" uid="uid://dxf8tfui70o7b" path="res://shop/shop_screen.png" id="1_r2p71"]
+[ext_resource type="PackedScene" uid="uid://d2hsdvmk4k7n3" path="res://shop/item.tscn" id="2_sxvro"]
+[ext_resource type="Texture2D" uid="uid://cks7njbauifdr" path="res://shop/reroll.png" id="3_mrnko"]
+[ext_resource type="Texture2D" uid="uid://b5d50n30p5sik" path="res://shop/reroll_pressed.png" id="4_gy7ao"]
+[ext_resource type="Texture2D" uid="uid://b2b7022l4icfm" path="res://shop/next.png" id="5_q4g17"]
+[ext_resource type="Texture2D" uid="uid://cv77g74bfq26o" path="res://shop/next_pressed.png" id="6_2wf2a"]
+[ext_resource type="PackedScene" uid="uid://4k8ofuollgjb" path="res://round/money.tscn" id="7_2wf2a"]
+
+[sub_resource type="GDScript" id="GDScript_givde"]
+script/source = "extends Node2D
+"
+
+[sub_resource type="GDScript" id="GDScript_xad5q"]
+resource_name = "nextButton"
+script/source = "extends TextureButton
+
+
+func _on_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://round/round.tscn\")
+	
+"
+
+[node name="Node2D" type="Node2D" unique_id=1537099262]
+script = SubResource("GDScript_givde")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=439743476]
+position = Vector2(161, 91)
+texture = ExtResource("1_r2p71")
+
+[node name="Node2D" parent="." unique_id=1899565630 instance=ExtResource("2_sxvro")]
+position = Vector2(36, 93)
+
+[node name="Node2D3" parent="." unique_id=856356232 instance=ExtResource("2_sxvro")]
+position = Vector2(175, 93)
+
+[node name="Node2D4" parent="." unique_id=1093215645 instance=ExtResource("2_sxvro")]
+position = Vector2(106, 93)
+
+[node name="reroll" type="TextureButton" parent="." unique_id=1281063824]
+offset_left = 75.0
+offset_top = 133.0
+offset_right = 134.0
+offset_bottom = 173.0
+texture_normal = ExtResource("3_mrnko")
+texture_pressed = ExtResource("4_gy7ao")
+texture_hover = ExtResource("4_gy7ao")
+
+[node name="next" type="TextureButton" parent="." unique_id=670760922]
+offset_left = 244.0
+offset_top = 141.0
+offset_right = 303.0
+offset_bottom = 181.0
+texture_normal = ExtResource("5_q4g17")
+texture_pressed = ExtResource("6_2wf2a")
+texture_hover = ExtResource("6_2wf2a")
+script = SubResource("GDScript_xad5q")
+
+[node name="Node2D2" parent="." unique_id=350536444 instance=ExtResource("7_2wf2a")]
+position = Vector2(5, 11)
+
+[connection signal="pressed" from="next" to="next" method="_on_pressed"]

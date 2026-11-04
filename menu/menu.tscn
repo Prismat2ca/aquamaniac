@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dwyp7rprxu40h"]
+
+[ext_resource type="Texture2D" uid="uid://0wu5xswpay04" path="res://menu/aquamaniac_title.png" id="1_g18jx"]
+[ext_resource type="Script" uid="uid://cebet5sxyciuo" path="res://menu/texture_button.gd" id="3_6nwqt"]
+[ext_resource type="Texture2D" uid="uid://bgpifmgi5o22l" path="res://menu/button.png" id="3_svuvw"]
+[ext_resource type="Texture2D" uid="uid://dg7m35i5vuno7" path="res://menu/button_pressed.png" id="4_juveg"]
+[ext_resource type="Texture2D" uid="uid://sx7m03761o67" path="res://menu/optbutton.png" id="5_svuvw"]
+[ext_resource type="Texture2D" uid="uid://c84ur7c7gsswx" path="res://menu/optbutton_pressed.png" id="6_juveg"]
+
+[sub_resource type="GDScript" id="GDScript_pbjm4"]
+resource_name = "optionsButton"
+script/source = "extends TextureButton
+
+
+func _on_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://options/options.tscn\")
+"
+
+[node name="Menu" type="Control" unique_id=1247449238]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="backgroundImg" type="TextureRect" parent="." unique_id=420475475]
+texture_filter = 1
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+texture = ExtResource("1_g18jx")
+expand_mode = 1
+
+[node name="playButton" type="TextureButton" parent="." unique_id=506578347]
+layout_mode = 0
+offset_left = 123.0
+offset_top = 88.0
+offset_right = 195.0
+offset_bottom = 128.0
+texture_normal = ExtResource("3_svuvw")
+texture_pressed = ExtResource("4_juveg")
+texture_hover = ExtResource("4_juveg")
+script = ExtResource("3_6nwqt")
+
+[node name="optionsButton" type="TextureButton" parent="." unique_id=441660240]
+z_index = 1
+layout_mode = 0
+offset_left = 123.0
+offset_top = 127.0
+offset_right = 195.0
+offset_bottom = 167.0
+texture_normal = ExtResource("5_svuvw")
+texture_pressed = ExtResource("6_juveg")
+texture_hover = ExtResource("6_juveg")
+script = SubResource("GDScript_pbjm4")
+
+[connection signal="pressed" from="playButton" to="playButton" method="_on_pressed"]
+[connection signal="pressed" from="optionsButton" to="optionsButton" method="_on_pressed"]

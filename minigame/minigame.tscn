@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://cf0vhnh4e7sw1"]
+
+[ext_resource type="Script" uid="uid://dei4cdxae6ggm" path="res://minigame/catchCircle.gd" id="1_k7ghj"]
+[ext_resource type="Texture2D" uid="uid://b3ics3md1p4yw" path="res://minigame/catch_circle.png" id="2_gdft7"]
+[ext_resource type="Texture2D" uid="uid://denmkuogeij0q" path="res://minigame/minigame_screen.png" id="3_gdft7"]
+[ext_resource type="Script" uid="uid://b1eplob5u3g7k" path="res://minigame/fish.gd" id="4_176e0"]
+[ext_resource type="Texture2D" uid="uid://dan53faltgwee" path="res://minigame/fish.png" id="4_oemwr"]
+[ext_resource type="Texture2D" uid="uid://ud7lpkjfyj5t" path="res://minigame/progress_bar.png" id="6_v4u58"]
+[ext_resource type="Script" uid="uid://cesxamiea3hfo" path="res://minigame/progress_bar.gd" id="7_gvxdg"]
+[ext_resource type="Texture2D" uid="uid://blbe2jpq55mde" path="res://minigame/treasure.png" id="8_85euj"]
+[ext_resource type="Texture2D" uid="uid://kd0t4ek8e1ed" path="res://minigame/treasure_progress_bar.png" id="9_lophh"]
+[ext_resource type="Script" uid="uid://dm5wswmssnnnq" path="res://minigame/treasure.gd" id="9_m07u6"]
+[ext_resource type="Script" uid="uid://dkiiwwkq2mphk" path="res://minigame/treasure_progress_bar.gd" id="10_m07u6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oemwr"]
+radius = 14.035668
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_176e0"]
+radius = 16.03122
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_176e0"]
+a = Vector2(-1, 5)
+b = Vector2(137, 5)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_g8igt"]
+a = Vector2(-1, 5)
+b = Vector2(137, 5)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_hd7sm"]
+a = Vector2(-1, 5)
+b = Vector2(-1, -129)
+
+[node name="Node2D" type="Node2D" unique_id=1266662425]
+
+[node name="catchCircle" type="CharacterBody2D" parent="." unique_id=115985379]
+position = Vector2(152, 90)
+collision_layer = 2
+script = ExtResource("1_k7ghj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="catchCircle" unique_id=1241483864]
+shape = SubResource("CircleShape2D_oemwr")
+
+[node name="Sprite2D" type="Sprite2D" parent="catchCircle" unique_id=226216184]
+z_index = 1
+texture = ExtResource("2_gdft7")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1379601212]
+z_index = -1
+position = Vector2(162, 91)
+texture = ExtResource("3_gdft7")
+
+[node name="Fish" type="CharacterBody2D" parent="." unique_id=1248237662]
+position = Vector2(176, 40)
+collision_layer = 2
+script = ExtResource("4_176e0")
+
+[node name="Sprite2D" type="Sprite2D" parent="Fish" unique_id=2036496157]
+texture = ExtResource("4_oemwr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fish" unique_id=1664028116]
+shape = SubResource("CircleShape2D_176e0")
+
+[node name="border1" type="StaticBody2D" parent="." unique_id=425651275]
+position = Vector2(132, 0)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="border1" unique_id=1292688209]
+position = Vector2(-36, 10)
+shape = SubResource("SegmentShape2D_176e0")
+
+[node name="border2" type="StaticBody2D" parent="." unique_id=882567895]
+position = Vector2(136, 130)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="border2" unique_id=1338028578]
+position = Vector2(-36, 10)
+shape = SubResource("SegmentShape2D_g8igt")
+
+[node name="border3" type="StaticBody2D" parent="." unique_id=1908231792]
+position = Vector2(215, 115)
+collision_layer = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="border3" unique_id=2142461465]
+position = Vector2(15, 28)
+shape = SubResource("SegmentShape2D_hd7sm")
+
+[node name="border4" type="StaticBody2D" parent="." unique_id=450484235]
+position = Vector2(87, 115)
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="border4" unique_id=1106746631]
+position = Vector2(15, 28)
+shape = SubResource("SegmentShape2D_hd7sm")
+
+[node name="progressBar" type="TextureProgressBar" parent="." unique_id=845649210]
+offset_left = 97.0
+offset_top = 156.0
+offset_right = 231.0
+offset_bottom = 173.0
+max_value = 500.0
+value = 100.0
+texture_progress = ExtResource("6_v4u58")
+script = ExtResource("7_gvxdg")
+
+[node name="treasure" type="Sprite2D" parent="." unique_id=1335668602]
+position = Vector2(187.25, 86.25)
+scale = Vector2(0.5810811, 0.5810811)
+texture = ExtResource("8_85euj")
+script = ExtResource("9_m07u6")
+
+[node name="treasureProgressBar" type="TextureProgressBar" parent="." unique_id=1349349196]
+offset_left = 245.0
+offset_top = 31.0
+offset_right = 261.0
+offset_bottom = 127.0
+max_value = 150.0
+fill_mode = 3
+texture_progress = ExtResource("9_lophh")
+script = ExtResource("10_m07u6")
