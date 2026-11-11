@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://b5d50n30p5sik" path="res://shop/reroll_pressed.png" id="4_gy7ao"]
 [ext_resource type="Texture2D" uid="uid://b2b7022l4icfm" path="res://shop/next.png" id="5_q4g17"]
 [ext_resource type="Texture2D" uid="uid://cv77g74bfq26o" path="res://shop/next_pressed.png" id="6_2wf2a"]
-[ext_resource type="PackedScene" uid="uid://4k8ofuollgjb" path="res://round/money.tscn" id="7_2wf2a"]
 
 [sub_resource type="GDScript" id="GDScript_givde"]
 script/source = "extends Node2D
@@ -22,20 +21,34 @@ func _on_pressed() -> void:
 	
 "
 
-[node name="Node2D" type="Node2D" unique_id=1537099262]
+[sub_resource type="GDScript" id="GDScript_q4g17"]
+resource_name = "moneyText"
+script/source = "extends RichTextLabel
+
+@onready var globalScript = $\"/root/global\"
+@export var title = \"Money: \"
+func _ready():
+	#displays the progress to the quota referencing the global script in form 100/1000 etc
+	updateDisplay()
+func updateDisplay():
+	$\".\".text = title+str(globalScript.money)
+ 
+"
+
+[node name="shop" type="Node2D" unique_id=1537099262]
 script = SubResource("GDScript_givde")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=439743476]
 position = Vector2(161, 91)
 texture = ExtResource("1_r2p71")
 
-[node name="Node2D" parent="." unique_id=1899565630 instance=ExtResource("2_sxvro")]
+[node name="Item1" parent="." unique_id=1899565630 instance=ExtResource("2_sxvro")]
 position = Vector2(36, 93)
 
-[node name="Node2D3" parent="." unique_id=856356232 instance=ExtResource("2_sxvro")]
+[node name="Item2" parent="." unique_id=856356232 instance=ExtResource("2_sxvro")]
 position = Vector2(175, 93)
 
-[node name="Node2D4" parent="." unique_id=1093215645 instance=ExtResource("2_sxvro")]
+[node name="Item3" parent="." unique_id=1093215645 instance=ExtResource("2_sxvro")]
 position = Vector2(106, 93)
 
 [node name="reroll" type="TextureButton" parent="." unique_id=1281063824]
@@ -57,7 +70,9 @@ texture_pressed = ExtResource("6_2wf2a")
 texture_hover = ExtResource("6_2wf2a")
 script = SubResource("GDScript_xad5q")
 
-[node name="Node2D2" parent="." unique_id=350536444 instance=ExtResource("7_2wf2a")]
-position = Vector2(5, 11)
+[node name="money" type="RichTextLabel" parent="." unique_id=1184857713]
+offset_right = 316.0
+offset_bottom = 40.0
+script = SubResource("GDScript_q4g17")
 
 [connection signal="pressed" from="next" to="next" method="_on_pressed"]

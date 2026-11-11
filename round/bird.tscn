@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://dqokhde161jwx"]
+
+[ext_resource type="Texture2D" uid="uid://2uwulv1snmmj" path="res://round/bird.png" id="1_g5k2s"]
+[ext_resource type="Texture2D" uid="uid://byli7c4nuhukm" path="res://round/bird_shadow.png" id="2_oq0gw"]
+
+[sub_resource type="GDScript" id="GDScript_crnqq"]
+resource_name = "bird"
+script/source = "extends CharacterBody2D
+var rand = RandomNumberGenerator.new()
+@export var speed = 1
+var angle = 0
+var acc = Vector2(0,0)
+var vel = Vector2(0,0)
+var constantVel = 0
+#takes in user movement and calculates acceleration and velocity.
+
+func getInput():
+	var inputDirection = Input.get_vector(\"left\", \"right\", \"up\", \"down\")
+	#changes the angle based on left and right input
+	angle +=inputDirection[0]*PI/150
+	
+	#makes acceleration a vector based on the angle
+	#then multiplied by the vertical user input
+	acc= Vector2.from_angle(angle)*speed*-inputDirection[1]
+	vel+=acc
+	vel*=0.9
+	velocity -= vel
+
+func _init():
+	position = Vector2(rand.randi_range(10,160),200)
+	scale = Vector2(1,1)*rand.randf_range(0.7,1.5)
+	constantVel = (1/scale[0])
+	z_index = scale[0]*10
+func _physics_process(delta):
+	
+	velocity = Vector2(100,-100)*constantVel
+	getInput()
+	move_and_slide()
+"
+
+[node name="Bird" type="Node2D" unique_id=780569090]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1799629232]
+script = SubResource("GDScript_crnqq")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=719201019]
+texture = ExtResource("1_g5k2s")
+
+[node name="Sprite2D2" type="Sprite2D" parent="CharacterBody2D" unique_id=59546641]
+modulate = Color(1, 1, 1, 0.3529412)
+position = Vector2(-47.416668, 42.25)
+scale = Vector2(0.537037, 0.537037)
+texture = ExtResource("2_oq0gw")

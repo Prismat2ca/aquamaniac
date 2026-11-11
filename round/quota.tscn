@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bkipdqcp7l8h6"]
+
+[node name="quota" type="Node2D" unique_id=1500258287]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1122153501]
+offset_right = 40.0
+offset_bottom = 40.0

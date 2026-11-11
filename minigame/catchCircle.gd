@@ -21,7 +21,7 @@ func getInput():
 	else:
 		bounds = false
 		
-	print("Velocity: ",playerVel)
+	
 #built in function that runs repeatedly
 func _physics_process(delta):
 

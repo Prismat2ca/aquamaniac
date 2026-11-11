@@ -9,6 +9,9 @@ var targetPos = Vector2(0,0)
 var unitVec = Vector2(0,0)
 #tag to see if the fish is at the boundary
 var bounds = false
+var value = rand.randi_range(5,30)
+
+
 
 
 #gives coordinates for the fish to move to

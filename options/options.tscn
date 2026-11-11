@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://ddih70kl7yvoi"]
 
+[ext_resource type="Script" uid="uid://balf1j7vg34x0" path="res://options/options.gd" id="1_0o51j"]
 [ext_resource type="Texture2D" uid="uid://byl0e6oobocpr" path="res://options/options_screen.png" id="1_g3ho5"]
 
 [sub_resource type="GDScript" id="GDScript_g3ho5"]
@@ -20,6 +21,8 @@ func _on_pressed() -> void:
 	get_tree().change_scene_to_file(\"res://settings/settings.tscn\")
 "
 
+[sub_resource type="Theme" id="Theme_0o51j"]
+
 [sub_resource type="GDScript" id="GDScript_c0xh2"]
 resource_name = "difficultySlider"
 script/source = "extends HSlider
@@ -32,6 +35,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_0o51j")
 
 [node name="BackgroundImg" type="TextureRect" parent="." unique_id=526042570]
 layout_mode = 0
@@ -61,6 +65,10 @@ offset_left = 85.0
 offset_top = 115.0
 offset_right = 231.0
 offset_bottom = 131.0
+theme = SubResource("Theme_0o51j")
+max_value = 2.0
+tick_count = 3
+ticks_on_borders = true
 script = SubResource("GDScript_c0xh2")
 
 [connection signal="pressed" from="backButton" to="backButton" method="_on_pressed"]

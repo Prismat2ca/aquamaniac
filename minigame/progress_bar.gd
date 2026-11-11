@@ -2,7 +2,7 @@ extends TextureProgressBar
 @onready var bar = $"."
 @onready var catchCircle = $"../catchCircle"
 @onready var fish = $"../Fish"
-
+@onready var globalScript = $"/root/global"
 func setProgress(newProgress):
 	bar.value = newProgress
 
@@ -12,7 +12,10 @@ func updateProgress(delta):
 	var catchPos = catchCircle.position
 	
 	#checks if bar is at max value (0-500)
-	if bar.value==0 or bar.value==500:	
+	if bar.value==0:	
+		get_tree().change_scene_to_file("res://round/round.tscn")
+	elif bar.value==500:
+		globalScript.quotaProgress += fish.value
 		get_tree().change_scene_to_file("res://round/round.tscn")
 	#compares distance between the two in both x and y
 	if (abs(fishPos[0]-catchPos[0])<20) and (abs(fishPos[1]-catchPos[1])<20) :

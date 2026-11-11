@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfxgth7vsh6px"
-path="res://.godot/imported/round_screeb.png-08f094126d35b19d5866387a1823b715.ctex"
+uid="uid://xahv8odb56he"
+path="res://.godot/imported/dock.png-9ff4f3b38703bc2b121d2ca802948f37.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://round/round_screeb.png"
-dest_files=["res://.godot/imported/round_screeb.png-08f094126d35b19d5866387a1823b715.ctex"]
+source_file="res://round/dock.png"
+dest_files=["res://.godot/imported/dock.png-9ff4f3b38703bc2b121d2ca802948f37.ctex"]
 
 [params]
 

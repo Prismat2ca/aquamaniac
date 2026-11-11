@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://kd0t4ek8e1ed" path="res://minigame/treasure_progress_bar.png" id="9_lophh"]
 [ext_resource type="Script" uid="uid://dm5wswmssnnnq" path="res://minigame/treasure.gd" id="9_m07u6"]
 [ext_resource type="Script" uid="uid://dkiiwwkq2mphk" path="res://minigame/treasure_progress_bar.gd" id="10_m07u6"]
+[ext_resource type="PackedScene" uid="uid://bi12bj3jgqk8h" path="res://round/round_timer.tscn" id="12_hmahm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oemwr"]
 radius = 14.035668
@@ -116,3 +117,5 @@ max_value = 150.0
 fill_mode = 3
 texture_progress = ExtResource("9_lophh")
 script = ExtResource("10_m07u6")
+
+[node name="roundTimer" parent="." unique_id=30991989 instance=ExtResource("12_hmahm")]
