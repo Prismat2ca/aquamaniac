@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://crvuxn7xe7udr"]
+
+[ext_resource type="Script" uid="uid://6qdxlce5guig" path="res://sea_circle.gd" id="1_ifl6r"]
+[ext_resource type="Texture2D" uid="uid://cwsr70pnk0x52" path="res://round/sea_circle.png" id="2_ql830"]
+
+[node name="SeaCircle" type="Node2D" unique_id=876456134]
+script = ExtResource("1_ifl6r")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2071018837]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_ql830")

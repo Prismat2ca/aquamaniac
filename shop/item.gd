@@ -4,3 +4,7 @@ var rand = RandomNumberGenerator.new()
 func _init():
 	itemId = rand.randi_range(1,3)
 	
+func refresh():
+	itemId = rand.randi_range(1,3)
+	$"Label".refresh()
+	$"Sprite2D".refresh()

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d2hsdvmk4k7n3" path="res://shop/item.tscn" id="2_sxvro"]
 [ext_resource type="Texture2D" uid="uid://cks7njbauifdr" path="res://shop/reroll.png" id="3_mrnko"]
 [ext_resource type="Texture2D" uid="uid://b5d50n30p5sik" path="res://shop/reroll_pressed.png" id="4_gy7ao"]
+[ext_resource type="Script" uid="uid://b75wsar12xclo" path="res://shop/reroll.gd" id="5_2wf2a"]
 [ext_resource type="Texture2D" uid="uid://b2b7022l4icfm" path="res://shop/next.png" id="5_q4g17"]
 [ext_resource type="Texture2D" uid="uid://cv77g74bfq26o" path="res://shop/next_pressed.png" id="6_2wf2a"]
 
@@ -32,7 +33,6 @@ func _ready():
 	updateDisplay()
 func updateDisplay():
 	$\".\".text = title+str(globalScript.money)
- 
 "
 
 [node name="shop" type="Node2D" unique_id=1537099262]
@@ -42,13 +42,13 @@ script = SubResource("GDScript_givde")
 position = Vector2(161, 91)
 texture = ExtResource("1_r2p71")
 
-[node name="Item1" parent="." unique_id=1899565630 instance=ExtResource("2_sxvro")]
+[node name="Item1" parent="." unique_id=1899565630 groups=["Items"] instance=ExtResource("2_sxvro")]
 position = Vector2(36, 93)
 
-[node name="Item2" parent="." unique_id=856356232 instance=ExtResource("2_sxvro")]
+[node name="Item2" parent="." unique_id=856356232 groups=["Items"] instance=ExtResource("2_sxvro")]
 position = Vector2(175, 93)
 
-[node name="Item3" parent="." unique_id=1093215645 instance=ExtResource("2_sxvro")]
+[node name="Item3" parent="." unique_id=1093215645 groups=["Items"] instance=ExtResource("2_sxvro")]
 position = Vector2(106, 93)
 
 [node name="reroll" type="TextureButton" parent="." unique_id=1281063824]
@@ -59,6 +59,7 @@ offset_bottom = 173.0
 texture_normal = ExtResource("3_mrnko")
 texture_pressed = ExtResource("4_gy7ao")
 texture_hover = ExtResource("4_gy7ao")
+script = ExtResource("5_2wf2a")
 
 [node name="next" type="TextureButton" parent="." unique_id=670760922]
 offset_left = 244.0
@@ -75,4 +76,5 @@ offset_right = 316.0
 offset_bottom = 40.0
 script = SubResource("GDScript_q4g17")
 
+[connection signal="pressed" from="reroll" to="reroll" method="_on_pressed"]
 [connection signal="pressed" from="next" to="next" method="_on_pressed"]

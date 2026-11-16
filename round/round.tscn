@@ -6,15 +6,19 @@
 [ext_resource type="Texture2D" uid="uid://c538rh8s0wdq3" path="res://round/ship.png" id="3_qpjc3"]
 [ext_resource type="Texture2D" uid="uid://c60llxfr81wpw" path="res://round/spawn.png" id="4_qpjc3"]
 [ext_resource type="PackedScene" uid="uid://bi12bj3jgqk8h" path="res://round/round_timer.tscn" id="6_x00y4"]
-[ext_resource type="Script" uid="uid://c4sbivqwr43lw" path="res://round/dock.gd" id="7_jmkpy"]
 [ext_resource type="Texture2D" uid="uid://ubibvo336l8n" path="res://round/dock-Sheet.png" id="8_jmkpy"]
 [ext_resource type="Script" uid="uid://c8hfdac68msxo" path="res://round/animated_sprite_2d.gd" id="9_xgjqf"]
-[ext_resource type="Script" uid="uid://0vpk6o0s7jn6" path="res://round/walls.gd" id="10_4ubr3"]
 [ext_resource type="Script" uid="uid://c40yetvvsgm4x" path="res://round/area_2d.gd" id="10_51j5o"]
+[ext_resource type="Texture2D" uid="uid://ct4uauj21eija" path="res://round/rain.png" id="11_4ubr3"]
 [ext_resource type="Texture2D" uid="uid://dupj3yhpk3jya" path="res://round/walls.png" id="11_51j5o"]
+[ext_resource type="Texture2D" uid="uid://wpyb7rachly1" path="res://round/water_ring.png" id="12_51j5o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qpjc3"]
 size = Vector2(73, 29)
+
+[sub_resource type="Gradient" id="Gradient_51j5o"]
+offsets = PackedFloat32Array(0, 0.47265625, 0.89453125, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 0.89411765, 0.89411765, 0.89411765, 0, 1, 1, 1, 1)
 
 [sub_resource type="GDScript" id="GDScript_qpjc3"]
 script/source = "extends CharacterBody2D
@@ -26,23 +30,13 @@ var vel = Vector2(0,0)
 
 #takes in user movement and calculates acceleration and velocity.
 
-func getInput():
-	var inputDirection = Input.get_vector(\"left\", \"right\", \"up\", \"down\")
-	#changes the angle based on left and right input
-	angle +=inputDirection[0]*PI/150
-	
-	#makes acceleration a vector based on the angle
-	#then multiplied by the vertical user input
-	acc= Vector2.from_angle(angle)*speed*-inputDirection[1]
-	vel+=acc
-	vel*=0.9
-	velocity = -vel
+
 
 #built in function that runs repeatedly
 func _physics_process(delta):
 	
 	$\".\".rotate(PI/200)
-	getInput()
+
 	move_and_slide()
 
 
@@ -52,17 +46,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1l7ea"]
 radius = 21.377558
-
-[sub_resource type="GDScript" id="GDScript_1l7ea"]
-resource_name = "QuotaProgress"
-script/source = "extends RichTextLabel
-
-@onready var globalScript = $\"/root/global\"
-@export var title = \"Quota Progress: \"
-func _ready():
-	#displays the progress to the quota referencing the global script in form 100/1000 etc
-	$\".\".text = title+str(globalScript.quotaProgress)+\"/\"+str(globalScript.quota)
-"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xgjqf"]
 atlas = ExtResource("8_jmkpy")
@@ -107,12 +90,19 @@ size = Vector2(63, 56)
 normal = Vector2(1, 0)
 distance = 99.0
 
+[sub_resource type="GDScript" id="GDScript_1l7ea"]
+resource_name = "QuotaProgress"
+script/source = "extends RichTextLabel
+
+@onready var globalScript = $\"/root/global\"
+@export var title = \"Quota Progress: \"
+func _ready():
+	#displays the progress to the quota referencing the global script in form 100/1000 etc
+	$\".\".text = title+str(globalScript.quotaProgress)+\"/\"+str(globalScript.quota)
+"
+
 [node name="Node2D" type="Node2D" unique_id=858340303]
 script = ExtResource("1_x00y4")
-
-[node name="RoundScreen" type="Sprite2D" parent="." unique_id=328830945]
-position = Vector2(160, 90)
-texture = ExtResource("1_rf44n")
 
 [node name="ship" type="CharacterBody2D" parent="." unique_id=1465159626]
 z_index = 1
@@ -129,7 +119,29 @@ z_index = 2
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_qpjc3")
 
+[node name="Camera2D" type="Camera2D" parent="ship" unique_id=861709616]
+
+[node name="Background" type="TextureRect" parent="ship" unique_id=2102490814]
+z_index = -1
+offset_left = -483.0
+offset_top = -523.0
+offset_right = 517.0
+offset_bottom = 477.0
+texture = ExtResource("1_rf44n")
+
+[node name="SplashParticles" type="CPUParticles2D" parent="ship" unique_id=362917435 groups=["Rain"]]
+z_index = -1
+position = Vector2(-4, 4)
+emitting = false
+amount = 50
+texture = ExtResource("12_51j5o")
+emission_shape = 3
+emission_rect_extents = Vector2(300, 300)
+gravity = Vector2(0, 0)
+color_ramp = SubResource("Gradient_51j5o")
+
 [node name="spawn" type="CharacterBody2D" parent="." unique_id=863671120]
+z_index = 2
 position = Vector2(261, 105)
 script = SubResource("GDScript_qpjc3")
 
@@ -143,21 +155,8 @@ position = Vector2(-261, -105)
 position = Vector2(261, 106)
 shape = SubResource("CircleShape2D_1l7ea")
 
-[node name="roundTimer" parent="." unique_id=30991989 instance=ExtResource("6_x00y4")]
-z_index = 100
-position = Vector2(1, 38)
-
-[node name="QuotaProgress" type="RichTextLabel" parent="." unique_id=1227056064]
-z_index = 100
-offset_left = 1.0
-offset_top = 2.0
-offset_right = 321.0
-offset_bottom = 42.0
-script = SubResource("GDScript_1l7ea")
-
 [node name="dock" type="CharacterBody2D" parent="." unique_id=1888063532]
 position = Vector2(-74, 93)
-script = ExtResource("7_jmkpy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="dock" unique_id=1517607764]
 sprite_frames = SubResource("SpriteFrames_gbuhk")
@@ -175,13 +174,39 @@ shape = SubResource("RectangleShape2D_xgjqf")
 shape = SubResource("WorldBoundaryShape2D_jmkpy")
 
 [node name="walls" type="CharacterBody2D" parent="." unique_id=314535925]
-script = ExtResource("10_4ubr3")
 
 [node name="Sprite2D" type="Sprite2D" parent="walls" unique_id=1530904978]
 position = Vector2(613, 86)
 texture = ExtResource("11_51j5o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="walls" unique_id=533373268]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1569562032]
+
+[node name="roundTimer" parent="CanvasLayer" unique_id=30991989 instance=ExtResource("6_x00y4")]
+z_index = 100
+position = Vector2(1, 38)
+
+[node name="QuotaProgress" type="RichTextLabel" parent="CanvasLayer" unique_id=1227056064]
+z_index = 100
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 321.0
+offset_bottom = 42.0
+script = SubResource("GDScript_1l7ea")
+
+[node name="RainParticles" type="CPUParticles2D" parent="CanvasLayer" unique_id=1703214680 groups=["Rain"]]
+modulate = Color(1, 1, 1, 0.61960787)
+position = Vector2(-24, -82)
+emitting = false
+amount = 19
+texture = ExtResource("11_4ubr3")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 200)
+spread = 180.0
+gravity = Vector2(980, 980)
+angle_min = -15.0
+angle_max = 15.0
 
 [connection signal="area_entered" from="spawn/Area2D" to="spawn" method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="dock/Area2D" to="dock" method="_on_area_2d_area_entered"]

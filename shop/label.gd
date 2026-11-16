@@ -3,7 +3,11 @@ extends Label
 var price = 0
 func _ready():
 	#the sprite is given a different texture based on the itemID, to differentiate it for the user.
+	refresh()
 	
+#seperate function so it can be called later without repeating the code.
+func refresh():
+		
 	match item.itemId:
 		1:
 			price = 50

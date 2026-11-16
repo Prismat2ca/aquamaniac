@@ -3,8 +3,10 @@ extends Sprite2D
 
 
 func _ready():
+	refresh()
+
+func refresh():
 	#the sprite is given a different texture based on the itemID, to differentiate it for the user.
-	
 	match item.itemId:
 		1:
 			var sprite = preload("res://shop/item1.png")
