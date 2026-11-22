@@ -13,7 +13,7 @@ func getInput():
 	playerVel*=0.995
 	velocity = playerVel
 
-	if (($".".position[0] >210) or ($".".position[0] <120) or ($".".position[1] >130) or ($".".position[1] <30)):
+	if ((position[0] >210) or (position[0] <120) or (position[1] >130) or (position[1] <30)):
 		if not bounds:
 			playerVel*=-0.5
 			

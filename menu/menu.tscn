@@ -6,14 +6,17 @@
 [ext_resource type="Texture2D" uid="uid://dg7m35i5vuno7" path="res://menu/button_pressed.png" id="4_juveg"]
 [ext_resource type="Texture2D" uid="uid://sx7m03761o67" path="res://menu/optbutton.png" id="5_svuvw"]
 [ext_resource type="Texture2D" uid="uid://c84ur7c7gsswx" path="res://menu/optbutton_pressed.png" id="6_juveg"]
+[ext_resource type="AudioStream" uid="uid://d0o0grox72236" path="res://sounds/alex-morgan-bossa-nova-cafe-morning-breeze-573876.mp3" id="7_v6yed"]
+[ext_resource type="Script" uid="uid://gfahwy0o26u6" path="res://menu/audio_stream_player.gd" id="8_s4hbh"]
 
 [sub_resource type="GDScript" id="GDScript_pbjm4"]
 resource_name = "optionsButton"
 script/source = "extends TextureButton
-
-
+var optionsScn = preload(\"res://options/options.tscn\")
 func _on_pressed() -> void:
-	get_tree().change_scene_to_file(\"res://options/options.tscn\")
+	var options = optionsScn.instantiate()
+	get_tree().current_scene.add_child(options)
+	#get_tree().change_scene_to_file(\"res://options/options.tscn\")
 "
 
 [node name="Menu" type="Control" unique_id=1247449238]
@@ -54,6 +57,11 @@ texture_normal = ExtResource("5_svuvw")
 texture_pressed = ExtResource("6_juveg")
 texture_hover = ExtResource("6_juveg")
 script = SubResource("GDScript_pbjm4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1277667758 groups=["sound"]]
+stream = ExtResource("7_v6yed")
+autoplay = true
+script = ExtResource("8_s4hbh")
 
 [connection signal="pressed" from="playButton" to="playButton" method="_on_pressed"]
 [connection signal="pressed" from="optionsButton" to="optionsButton" method="_on_pressed"]

@@ -2,31 +2,126 @@
 
 [ext_resource type="Script" uid="uid://balf1j7vg34x0" path="res://options/options.gd" id="1_0o51j"]
 [ext_resource type="Texture2D" uid="uid://byl0e6oobocpr" path="res://options/options_screen.png" id="1_g3ho5"]
+[ext_resource type="Texture2D" uid="uid://cc44r5kur0d6g" path="res://options/grabber.png" id="3_jtqf2"]
+[ext_resource type="Texture2D" uid="uid://cxek6arqlwdcs" path="res://options/tick.png" id="4_dwof0"]
 
 [sub_resource type="GDScript" id="GDScript_g3ho5"]
 resource_name = "backButton"
 script/source = "extends TextureButton
 
 func _on_pressed() -> void:
-	get_tree().change_scene_to_file(\"res://menu/menu.tscn\")
+	get_parent().free()
 "
 
 [sub_resource type="GDScript" id="GDScript_0o51j"]
 resource_name = "settingsButton"
 script/source = "extends TextureButton
-
+var settingsScn = preload(\"res://settings/settings.tscn\")
 func _on_pressed() -> void:
-	get_tree().change_scene_to_file(\"res://settings/settings.tscn\")
+	#get_tree().change_scene_to_file(\"res://settings/settings.tscn\")
+	
+	var settings = settingsScn.instantiate()
+	get_tree().current_scene.add_child(settings)
+	#get_tree().change_scene_to_file(\"res://options/options.tscn\")
 "
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g3cjn"]
+atlas = ExtResource("3_jtqf2")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tns5w"]
+atlas = ExtResource("3_jtqf2")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dsph3"]
+atlas = ExtResource("3_jtqf2")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcuot"]
+atlas = ExtResource("4_dwof0")
+region = Rect2(4.863201, 0, 9.296982, 42.86402)
+margin = Rect2(0, -25, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xv3dw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.4)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hxrhv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r58fe"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
 [sub_resource type="Theme" id="Theme_0o51j"]
+HSlider/constants/center_grabber = 0
+HSlider/constants/grabber_offset = 0
+HSlider/constants/tick_offset = 0
+HSlider/icons/grabber = SubResource("AtlasTexture_g3cjn")
+HSlider/icons/grabber_disabled = SubResource("AtlasTexture_tns5w")
+HSlider/icons/grabber_highlight = SubResource("AtlasTexture_dsph3")
+HSlider/icons/tick = SubResource("AtlasTexture_lcuot")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_xv3dw")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_hxrhv")
+HSlider/styles/slider = SubResource("StyleBoxFlat_r58fe")
 
 [sub_resource type="GDScript" id="GDScript_c0xh2"]
 resource_name = "difficultySlider"
 script/source = "extends HSlider
+@onready var globalScript = $\"/root/global\"
+
+#saves value during instance of game
+func _ready() -> void:
+	if FileAccess.file_exists(\"user://difficulty.dat\"):
+		var file = FileAccess.open(\"user://difficulty.dat\",FileAccess.READ)
+		value = file.get_float()
+		file.close()
+	
+	else:
+		var file = FileAccess.open(\"user://difficulty.dat\",FileAccess.WRITE)
+		file.store_float(value)
+		file.close()
+
+#this lowers how often the function is called
+#reducing how intensive it is
+func _on_drag_ended(value_changed: bool) -> void:
+	match value:
+		0.0:
+			globalScript.difficulty = globalScript.DIFFICULTY_TYPE.EASY
+		2.0:
+			globalScript.difficulty = globalScript.DIFFICULTY_TYPE.HARD
+		_:
+			globalScript.difficulty = globalScript.DIFFICULTY_TYPE.NORMAL
+			
+	var file = FileAccess.open(\"user://difficulty.dat\",FileAccess.WRITE)
+	file.store_float(value)
+	file.close()
 "
 
 [node name="Options" type="Control" unique_id=1101607369]
+z_index = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,6 +160,7 @@ offset_right = 231.0
 offset_bottom = 131.0
 theme = SubResource("Theme_0o51j")
 max_value = 2.0
+value = 1.0
 tick_count = 3
 ticks_on_borders = true
 script = SubResource("GDScript_c0xh2")
@@ -72,3 +168,4 @@ script = SubResource("GDScript_c0xh2")
 [connection signal="pressed" from="backButton" to="backButton" method="_on_pressed"]
 [connection signal="pressed" from="settingsButton" to="backButton" method="_on_settings_button_pressed"]
 [connection signal="pressed" from="settingsButton" to="settingsButton" method="_on_pressed"]
+[connection signal="drag_ended" from="difficultySlider" to="difficultySlider" method="_on_drag_ended"]

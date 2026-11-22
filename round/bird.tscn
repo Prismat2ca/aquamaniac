@@ -8,13 +8,13 @@ resource_name = "bird"
 script/source = "extends CharacterBody2D
 var rand = RandomNumberGenerator.new()
 var constantVel = 0
-@onready var globalScript = $\"/root/global\"
+
 
 
 
 func _ready():
 	#the position needs to be relative to the ship
-	position = Vector2(rand.randi_range(-260,50)+globalScript.shipPos[0],200+globalScript.shipPos[1])
+	position = Vector2(rand.randi_range(-260,50)+global.shipPos[0],200+global.shipPos[1])
 	scale = Vector2(1,1)*rand.randf_range(0.7,1.5)
 	constantVel = (scale[0])
 	z_index = scale[0]*10

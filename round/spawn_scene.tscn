@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cp2bvfa2r7c0n"]
+
+[ext_resource type="Texture2D" uid="uid://c60llxfr81wpw" path="res://round/spawn.png" id="1_qq33g"]
+
+[sub_resource type="GDScript" id="GDScript_rbewk"]
+script/source = "extends CharacterBody2D
+@export var speed = 10
+var rand = RandomNumberGenerator.new()
+var age = 0
+
+func _ready() -> void:
+	#this process produces a random spot near the player to appear
+	#it checks the distance so it does not spawn on the player
+	while true:
+		var pos = Vector2(rand.randf_range(-300,300)+global.shipPos[0],rand.randf_range(-300,300)+global.shipPos[1])
+		
+		if pos.distance_squared_to(global.shipPos)>50000:
+			position = pos
+			break
+		
+func _physics_process(delta):
+	#makes it less variable on fps
+	age+=delta
+	
+	#makes the spawn more obviously interactable, by having movement
+	$\".\".rotate(PI/200)
+
+	move_and_slide()
+	#stops an infinite increase in spawns
+	if age>=20:
+		free()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s6u45"]
+radius = 21.377558
+
+[node name="SpawnScene" type="Node2D" unique_id=581675820]
+
+[node name="spawn" type="CharacterBody2D" parent="." unique_id=886102198]
+z_index = 2
+position = Vector2(261, 105)
+script = SubResource("GDScript_rbewk")
+
+[node name="spawnSprite" type="Sprite2D" parent="spawn" unique_id=1595955154]
+texture = ExtResource("1_qq33g")
+
+[node name="Area2D" type="Area2D" parent="spawn" unique_id=1537383983 groups=["spawn"]]
+position = Vector2(-261, -105)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="spawn/Area2D" unique_id=1885674475]
+position = Vector2(261, 106)
+shape = SubResource("CircleShape2D_s6u45")
+
+[connection signal="area_entered" from="spawn/Area2D" to="spawn" method="_on_area_2d_area_entered"]

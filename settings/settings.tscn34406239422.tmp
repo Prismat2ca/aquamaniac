@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://c42anialmp0d0"]
+
+[ext_resource type="Script" uid="uid://dri3xh1sqtug8" path="res://settings/settings.gd" id="1_i854f"]
+[ext_resource type="Texture2D" uid="uid://bk1gdrm22jveq" path="res://settings/settings_screen.png" id="1_iirne"]
+[ext_resource type="Script" uid="uid://byipltqxr26hd" path="res://settings/music_volume.gd" id="3_prb04"]
+
+[sub_resource type="GDScript" id="GDScript_i854f"]
+resource_name = "backButton"
+script/source = "extends TextureButton
+
+func _on_pressed() -> void:
+	get_tree().change_scene_to_file(\"res://options/options.tscn\")
+"
+
+[node name="settings" type="Control" unique_id=295408171]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i854f")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1571230001]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_iirne")
+
+[node name="backButton" type="TextureButton" parent="." unique_id=685995055]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 131.0
+offset_right = 91.0
+offset_bottom = 153.0
+script = SubResource("GDScript_i854f")
+
+[node name="MasterVolume" type="HSlider" parent="." unique_id=164913348]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 54.0
+offset_right = 93.0
+offset_bottom = 70.0
+
+[node name="MusicVolume" type="HSlider" parent="." unique_id=1205778692]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 86.0
+offset_right = 92.0
+offset_bottom = 102.0
+min_value = -80.0
+max_value = 24.0
+script = ExtResource("3_prb04")
+
+[node name="ToggleButton" type="TextureButton" parent="." unique_id=1578844698]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 106.0
+offset_right = 93.0
+offset_bottom = 122.0
+
+[connection signal="pressed" from="backButton" to="backButton" method="_on_pressed"]

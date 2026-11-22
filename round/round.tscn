@@ -4,48 +4,23 @@
 [ext_resource type="Script" uid="uid://bbo1k8kbf42mg" path="res://round/round.gd" id="1_x00y4"]
 [ext_resource type="Script" uid="uid://62eq2snxuaty" path="res://round/character_body_2d.gd" id="2_wl5wo"]
 [ext_resource type="Texture2D" uid="uid://c538rh8s0wdq3" path="res://round/ship.png" id="3_qpjc3"]
-[ext_resource type="Texture2D" uid="uid://c60llxfr81wpw" path="res://round/spawn.png" id="4_qpjc3"]
 [ext_resource type="PackedScene" uid="uid://bi12bj3jgqk8h" path="res://round/round_timer.tscn" id="6_x00y4"]
+[ext_resource type="Script" uid="uid://c4sbivqwr43lw" path="res://round/dock.gd" id="7_51j5o"]
 [ext_resource type="Texture2D" uid="uid://ubibvo336l8n" path="res://round/dock-Sheet.png" id="8_jmkpy"]
 [ext_resource type="Script" uid="uid://c8hfdac68msxo" path="res://round/animated_sprite_2d.gd" id="9_xgjqf"]
-[ext_resource type="Script" uid="uid://c40yetvvsgm4x" path="res://round/area_2d.gd" id="10_51j5o"]
 [ext_resource type="Texture2D" uid="uid://ct4uauj21eija" path="res://round/rain.png" id="11_4ubr3"]
 [ext_resource type="Texture2D" uid="uid://dupj3yhpk3jya" path="res://round/walls.png" id="11_51j5o"]
+[ext_resource type="AudioStream" uid="uid://1g5evkpvukul" path="res://sounds/somaa26-ocean-waves_-pebbles-coast-568723.mp3" id="12_3txkv"]
 [ext_resource type="Texture2D" uid="uid://wpyb7rachly1" path="res://round/water_ring.png" id="12_51j5o"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qpjc3"]
-size = Vector2(73, 29)
+[ext_resource type="Script" uid="uid://d2b8j1sc7annr" path="res://round/item_stats.gd" id="12_nwpd4"]
+[ext_resource type="Script" uid="uid://byfgvfbd6wqt5" path="res://round/audio_stream_player.gd" id="13_3txkv"]
 
 [sub_resource type="Gradient" id="Gradient_51j5o"]
 offsets = PackedFloat32Array(0, 0.47265625, 0.89453125, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 0.89411765, 0.89411765, 0.89411765, 0, 1, 1, 1, 1)
 
-[sub_resource type="GDScript" id="GDScript_qpjc3"]
-script/source = "extends CharacterBody2D
-
-@export var speed = 10
-var angle = 0
-var acc = Vector2(0,0)
-var vel = Vector2(0,0)
-
-#takes in user movement and calculates acceleration and velocity.
-
-
-
-#built in function that runs repeatedly
-func _physics_process(delta):
-	
-	$\".\".rotate(PI/200)
-
-	move_and_slide()
-
-
-func _on_area_2d_area_entered(area: Area2D) -> void:
-	get_tree().change_scene_to_file(\"res://minigame/minigame.tscn\")
-"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_1l7ea"]
-radius = 21.377558
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qpjc3"]
+size = Vector2(73, 29)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xgjqf"]
 atlas = ExtResource("8_jmkpy")
@@ -83,22 +58,38 @@ animations = [{
 "speed": 1.7
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xgjqf"]
-size = Vector2(63, 56)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tobk4"]
+size = Vector2(85.5, 93.5)
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_jmkpy"]
-normal = Vector2(1, 0)
-distance = 99.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7ddo"]
+size = Vector2(85.5, 71)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ubr3"]
+size = Vector2(2109.5, 126)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_51j5o"]
+size = Vector2(2168.5, 91)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3txkv"]
+size = Vector2(109, 1094)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwpd4"]
+size = Vector2(109, 1094)
 
 [sub_resource type="GDScript" id="GDScript_1l7ea"]
 resource_name = "QuotaProgress"
 script/source = "extends RichTextLabel
 
-@onready var globalScript = $\"/root/global\"
 @export var title = \"Quota Progress: \"
 func _ready():
+	refresh()
+#updates to the current value of progress
+func refresh():
 	#displays the progress to the quota referencing the global script in form 100/1000 etc
-	$\".\".text = title+str(globalScript.quotaProgress)+\"/\"+str(globalScript.quota)
+	$\".\".text = title+str(int(global.quotaProgress))+\"/\"+str(global.quota)
+
+func _physics_process(delta: float) -> void:
+	refresh()
 "
 
 [node name="Node2D" type="Node2D" unique_id=858340303]
@@ -110,14 +101,8 @@ position = Vector2(159, 87)
 script = ExtResource("2_wl5wo")
 
 [node name="Ship" type="Sprite2D" parent="ship" unique_id=1197407335]
+position = Vector2(1, 0)
 texture = ExtResource("3_qpjc3")
-
-[node name="Area2D" type="Area2D" parent="ship" unique_id=541752461]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/Area2D" unique_id=1260905619]
-z_index = 2
-position = Vector2(0.5, 0.5)
-shape = SubResource("RectangleShape2D_qpjc3")
 
 [node name="Camera2D" type="Camera2D" parent="ship" unique_id=861709616]
 
@@ -140,46 +125,61 @@ emission_rect_extents = Vector2(300, 300)
 gravity = Vector2(0, 0)
 color_ramp = SubResource("Gradient_51j5o")
 
-[node name="spawn" type="CharacterBody2D" parent="." unique_id=863671120]
+[node name="Area2D" type="Area2D" parent="ship" unique_id=777472026]
+position = Vector2(2, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/Area2D" unique_id=747357324]
 z_index = 2
-position = Vector2(261, 105)
-script = SubResource("GDScript_qpjc3")
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_qpjc3")
 
-[node name="Spawn" type="Sprite2D" parent="spawn" unique_id=2085829000]
-texture = ExtResource("4_qpjc3")
-
-[node name="Area2D" type="Area2D" parent="spawn" unique_id=1823009190]
-position = Vector2(-261, -105)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="spawn/Area2D" unique_id=244220841]
-position = Vector2(261, 106)
-shape = SubResource("CircleShape2D_1l7ea")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship" unique_id=1260905619]
+z_index = 2
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_qpjc3")
 
 [node name="dock" type="CharacterBody2D" parent="." unique_id=1888063532]
 position = Vector2(-74, 93)
+script = ExtResource("7_51j5o")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="dock" unique_id=1517607764]
+z_index = 5
 sprite_frames = SubResource("SpriteFrames_gbuhk")
 frame_progress = 0.80926025
 script = ExtResource("9_xgjqf")
 
-[node name="Area2D" type="Area2D" parent="dock" unique_id=1831311793]
-script = ExtResource("10_51j5o")
+[node name="Area2D" type="Area2D" parent="dock" unique_id=1576781007]
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="dock/Area2D" unique_id=240641241]
-position = Vector2(128.5, -3)
-shape = SubResource("RectangleShape2D_xgjqf")
+[node name="DetectionCollision" type="CollisionShape2D" parent="dock/Area2D" unique_id=2029378263]
+position = Vector2(123.25, -1.75)
+shape = SubResource("RectangleShape2D_tobk4")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="dock/Area2D" unique_id=891341687]
-shape = SubResource("WorldBoundaryShape2D_jmkpy")
+[node name="PhysicalCollision" type="CollisionShape2D" parent="dock" unique_id=362903725]
+position = Vector2(116, 4.5)
+shape = SubResource("RectangleShape2D_p7ddo")
 
 [node name="walls" type="CharacterBody2D" parent="." unique_id=314535925]
 
 [node name="Sprite2D" type="Sprite2D" parent="walls" unique_id=1530904978]
+z_index = 5
 position = Vector2(613, 86)
 texture = ExtResource("11_51j5o")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="walls" unique_id=533373268]
+[node name="wallCollision" type="CollisionShape2D" parent="walls" unique_id=1893005213]
+position = Vector2(685, 575)
+shape = SubResource("RectangleShape2D_4ubr3")
+
+[node name="wallCollision2" type="CollisionShape2D" parent="walls" unique_id=1056702]
+position = Vector2(862, -353)
+shape = SubResource("RectangleShape2D_51j5o")
+
+[node name="wallCollision3" type="CollisionShape2D" parent="walls" unique_id=445084451]
+position = Vector2(1464, 59)
+shape = SubResource("RectangleShape2D_3txkv")
+
+[node name="wallCollision4" type="CollisionShape2D" parent="walls" unique_id=1691828768]
+position = Vector2(-29, 49)
+shape = SubResource("RectangleShape2D_nwpd4")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1569562032]
 
@@ -193,6 +193,7 @@ offset_left = 1.0
 offset_top = 2.0
 offset_right = 321.0
 offset_bottom = 42.0
+text = "Quota Progress: 0/50"
 script = SubResource("GDScript_1l7ea")
 
 [node name="RainParticles" type="CPUParticles2D" parent="CanvasLayer" unique_id=1703214680 groups=["Rain"]]
@@ -208,5 +209,25 @@ gravity = Vector2(980, 980)
 angle_min = -15.0
 angle_max = 15.0
 
-[connection signal="area_entered" from="spawn/Area2D" to="spawn" method="_on_area_2d_area_entered"]
+[node name="ItemStats" type="RichTextLabel" parent="CanvasLayer" unique_id=1880756451]
+offset_left = 237.0
+offset_top = -1.0
+offset_right = 401.0
+offset_bottom = 24.0
+tooltip_text = "Max Weight: 200
+Fish Prof: Small red
+Size Prof: Medium
+Luck Mod: 2
+Treasure Mod: 3
+Bait Mod: 2"
+text = "Item Stats"
+script = ExtResource("12_nwpd4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=10002279]
+stream = ExtResource("12_3txkv")
+autoplay = true
+parameters/looping = true
+script = ExtResource("13_3txkv")
+
+[connection signal="area_entered" from="ship/Area2D" to="ship" method="_on_area_2d_area_entered"]
 [connection signal="area_entered" from="dock/Area2D" to="dock" method="_on_area_2d_area_entered"]

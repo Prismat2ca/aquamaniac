@@ -32,6 +32,7 @@ a = Vector2(-1, 5)
 b = Vector2(-1, -129)
 
 [node name="Node2D" type="Node2D" unique_id=1266662425]
+z_index = 1
 
 [node name="catchCircle" type="CharacterBody2D" parent="." unique_id=115985379]
 position = Vector2(152, 90)
@@ -60,6 +61,13 @@ texture = ExtResource("4_oemwr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fish" unique_id=1664028116]
 shape = SubResource("CircleShape2D_176e0")
+
+[node name="WeightLabel" type="RichTextLabel" parent="Fish" unique_id=1210641477]
+offset_left = 6.0
+offset_top = -1.0
+offset_right = 46.0
+offset_bottom = 39.0
+text = "20"
 
 [node name="border1" type="StaticBody2D" parent="." unique_id=425651275]
 position = Vector2(132, 0)
@@ -119,3 +127,4 @@ texture_progress = ExtResource("9_lophh")
 script = ExtResource("10_m07u6")
 
 [node name="roundTimer" parent="." unique_id=30991989 instance=ExtResource("12_hmahm")]
+visible = false

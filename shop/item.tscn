@@ -5,23 +5,25 @@
 [ext_resource type="Script" uid="uid://lr22c868g34k" path="res://shop/sprite_2d.gd" id="3_pf1n6"]
 [ext_resource type="Script" uid="uid://cir21e84f0uv6" path="res://shop/label.gd" id="4_6kmbe"]
 [ext_resource type="Texture2D" uid="uid://d3si64h83v7uw" path="res://shop/item_background.png" id="5_6fecv"]
+[ext_resource type="Texture2D" uid="uid://ce1lhtipeyde4" path="res://minigame/fish_pink_big.png" id="6_yosq7"]
 
 [sub_resource type="GDScript" id="GDScript_1yahu"]
 resource_name = "itemButton"
 script/source = "extends TextureButton
-@onready var globalScript = $\"/root/global\"
+
 #Gathered by dragging the node into the script while holding cntrl
 @onready var money: RichTextLabel = $\"../../money\"
-@onready var price = $\"../Label\".price
-
+@onready var label = $\"../Label\"
 
 
 
 func _on_pressed() -> void:
-	if(globalScript.money>=price):
-		globalScript.money-=price
+	#checks for enough money, and that it isnt already bought (invisible)
+	if(global.money>=label.price and visible):
+		global.money-=label.price
 		money.updateDisplay()
-		get_parent().free()
+		#keeps it as a node, so that it can be rerolled
+		get_parent().visible = false
 "
 
 [node name="Item" type="Node2D" unique_id=1899565630]
@@ -34,10 +36,10 @@ script = ExtResource("3_pf1n6")
 
 [node name="Label" type="Label" parent="." unique_id=1544798877]
 z_index = 1
-offset_left = -33.0
-offset_top = 16.0
-offset_right = 48.0
-offset_bottom = 39.0
+offset_left = -35.0
+offset_top = -7.999999
+offset_right = 46.0
+offset_bottom = 15.000001
 scale = Vector2(0.8, 0.8)
 text = "PRICE: 100"
 script = ExtResource("4_6kmbe")
@@ -50,7 +52,7 @@ offset_right = 23.0
 offset_bottom = 27.0
 script = SubResource("GDScript_1yahu")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1442083810]
+[node name="ItemTexture" type="TextureRect" parent="." unique_id=1442083810]
 offset_left = -23.0
 offset_top = -28.0
 offset_right = 23.0
@@ -58,4 +60,13 @@ offset_bottom = 27.0
 mouse_filter = 2
 texture = ExtResource("5_6fecv")
 
+[node name="FishTexture" type="TextureRect" parent="." unique_id=1144031497]
+visible = false
+offset_left = -19.0
+offset_top = 27.0
+offset_right = 18.0
+offset_bottom = 64.0
+texture = ExtResource("6_yosq7")
+
+[connection signal="pressed" from="ItemButton" to="." method="_on_item_button_pressed"]
 [connection signal="pressed" from="ItemButton" to="ItemButton" method="_on_pressed"]

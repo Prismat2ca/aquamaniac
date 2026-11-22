@@ -7,9 +7,21 @@
 [ext_resource type="Script" uid="uid://b75wsar12xclo" path="res://shop/reroll.gd" id="5_2wf2a"]
 [ext_resource type="Texture2D" uid="uid://b2b7022l4icfm" path="res://shop/next.png" id="5_q4g17"]
 [ext_resource type="Texture2D" uid="uid://cv77g74bfq26o" path="res://shop/next_pressed.png" id="6_2wf2a"]
+[ext_resource type="Texture2D" uid="uid://dan23rw4qgt7r" path="res://shop/shopkeeper.png" id="8_xad5q"]
+[ext_resource type="Script" uid="uid://ct6nyti51orsf" path="res://shop/shopkeeper.gd" id="9_ljlg5"]
+[ext_resource type="Texture2D" uid="uid://cywgf04p60tbu" path="res://shop/counter.png" id="10_bv5vx"]
 
 [sub_resource type="GDScript" id="GDScript_givde"]
 script/source = "extends Node2D
+@onready var money: RichTextLabel = $money
+
+
+func _ready() -> void:
+	#this means that the round will increment on any shop visit
+	#which is guaranteed once per round
+	global.updateRoundVars()
+	#makes it display the correct money after adding the quota overflow
+	money.updateDisplay()
 "
 
 [sub_resource type="GDScript" id="GDScript_xad5q"]
@@ -27,41 +39,41 @@ resource_name = "moneyText"
 script/source = "extends RichTextLabel
 
 @onready var globalScript = $\"/root/global\"
-@export var title = \"Money: \"
 func _ready():
 	#displays the progress to the quota referencing the global script in form 100/1000 etc
 	updateDisplay()
 func updateDisplay():
-	$\".\".text = title+str(globalScript.money)
+	$\".\".text = str(int(globalScript.money))+\"D\"
 "
 
 [node name="shop" type="Node2D" unique_id=1537099262]
 script = SubResource("GDScript_givde")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=439743476]
+[node name="Background" type="Sprite2D" parent="." unique_id=439743476]
 position = Vector2(161, 91)
 texture = ExtResource("1_r2p71")
 
 [node name="Item1" parent="." unique_id=1899565630 groups=["Items"] instance=ExtResource("2_sxvro")]
-position = Vector2(36, 93)
+position = Vector2(37, 112)
 
 [node name="Item2" parent="." unique_id=856356232 groups=["Items"] instance=ExtResource("2_sxvro")]
-position = Vector2(175, 93)
+position = Vector2(176, 112)
 
 [node name="Item3" parent="." unique_id=1093215645 groups=["Items"] instance=ExtResource("2_sxvro")]
-position = Vector2(106, 93)
+position = Vector2(107, 112)
 
 [node name="reroll" type="TextureButton" parent="." unique_id=1281063824]
-offset_left = 75.0
-offset_top = 133.0
-offset_right = 134.0
-offset_bottom = 173.0
+offset_left = 123.0
+offset_top = 46.0
+offset_right = 182.0
+offset_bottom = 80.0
 texture_normal = ExtResource("3_mrnko")
 texture_pressed = ExtResource("4_gy7ao")
 texture_hover = ExtResource("4_gy7ao")
 script = ExtResource("5_2wf2a")
 
 [node name="next" type="TextureButton" parent="." unique_id=670760922]
+z_index = 1
 offset_left = 244.0
 offset_top = 141.0
 offset_right = 303.0
@@ -72,9 +84,21 @@ texture_hover = ExtResource("6_2wf2a")
 script = SubResource("GDScript_xad5q")
 
 [node name="money" type="RichTextLabel" parent="." unique_id=1184857713]
-offset_right = 316.0
-offset_bottom = 40.0
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 117.0
+offset_bottom = 52.0
+text = "100D"
 script = SubResource("GDScript_q4g17")
+
+[node name="Shopkeeper" type="Sprite2D" parent="." unique_id=1108956457]
+position = Vector2(267, 84)
+texture = ExtResource("8_xad5q")
+script = ExtResource("9_ljlg5")
+
+[node name="Counter" type="Sprite2D" parent="." unique_id=1025720885]
+position = Vector2(263, 155)
+texture = ExtResource("10_bv5vx")
 
 [connection signal="pressed" from="reroll" to="reroll" method="_on_pressed"]
 [connection signal="pressed" from="next" to="next" method="_on_pressed"]
